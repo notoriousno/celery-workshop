@@ -1,0 +1,53 @@
+---
+- vars:
+    host: celerybox
+    user: dev
+    title: celery-workshop
+    homedir: /home/{{ user }}
+    workshopPath: "{{ homedir }}/{{ title }}"
+    venvPath: "{{ workshopPath }}/venv/{{ title }}"
+
+  hosts: "{{ host }}"
+  remote_user: "{{ user }}"
+
+
+  tasks:
+    - name: Update repo then perform safe upgrade of packages
+      become: yes
+      become_method: sudo
+      command: apt-get -y update
+
+
+    - name: Add base packages necessary for celery to run.
+      become: yes
+      become_method: sudo
+      vars:
+        strPackages: git python3-pip python3-venv python3-wheel redis-server rabbitmq-server
+        packages:
+          - git
+          - python3-pip
+          - python3-venv
+          - python3-wheel
+          - redis-server
+          - rabbitmq-server
+      command: apt-get -y install {{ strPackages }}
+
+      #---------- Loop with the apt module ----------#
+      #apt: deb={{ item }}
+      #command: apt-get -y install {{ item }}
+      #with_indexed_items: packages
+
+
+    - name: Create the directory structure and paths. Path={{ workshopPath }}
+      git: repo="https://github.com/notoriousno/celery-workshop.git" dest={{ workshopPath }} clone=yes
+
+
+    - name: Create the virtualenv
+      command: pyvenv {{ venvPath }} creates="{{ venvPath }}/bin/activate"
+
+
+    - name: Install the Python requirements into the virtualenv.
+      vars:
+        reqFile: "{{ workshopPath }}/requirements.txt"
+      command: "{{ venvPath }}/bin/pip install -r {{ reqFile }}"
+
