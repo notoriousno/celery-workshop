@@ -51,3 +51,28 @@
         reqFile: "{{ workshopPath }}/requirements.txt"
       command: "{{ venvPath }}/bin/pip install -r {{ reqFile }}"
 
+    #---------- Setup RabbitMQ ----------
+    - name: Create a new RabbitMQ user
+      become: yes
+      become_method: sudo
+      command: rabbitmqctl add_user {{ rabbitUser }} {{ rabbitPass }}
+
+    - name: Instruct the RabbitMQ broker to create a new virtual host.
+      become: yes
+      become_method: sudo
+      command: rabbitmqctl add_vhost {{ rabbitVHost }}
+
+    - name: This command instructs the RabbitMQ broker to ensure the user is an administrator. NOT SECURE FOR PRODUCTION!
+      become: yes
+      become_method: sudo
+      command: rabbitmqctl set_user_tags {{ rabbitUser }} administrator
+
+    - name: Grant resources
+      become: yes
+      become_method: sudo
+      command: rabbitmqctl set_permissions -p {{ rabbitVHost }} {{ rabbitUser }} ".*" ".*" ".*"
+
+    - name: Run the RabbitMQ Management Plugin for Flower (Celery monitor)
+      become: yes
+      become_method: sudo
+      command: rabbitmq-plugins enable rabbitmq_management

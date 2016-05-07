@@ -1,3 +1,13 @@
+Starting Stuff
+==============
+
+RabbitMQ Management Plugin
+--------------------------
+`rabbitmq-plugins enable rabbitmq_management`
+
+
+
+
 Directory Structure
 ===================
 
