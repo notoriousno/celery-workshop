@@ -22,7 +22,7 @@
       become: yes
       become_method: sudo
       vars:
-        strPackages: git python3-pip python3-venv python3-wheel redis-server rabbitmq-server
+        strPackages: git python3-pip python3-venv python3-wheel redis-server rabbitmq-server imagemagick
         packages:
           - git
           - python3-pip
@@ -30,6 +30,7 @@
           - python3-wheel
           - redis-server
           - rabbitmq-server
+          - imagemagick
       command: apt-get -y install {{ strPackages }}
 
       #---------- Loop with the apt module ----------#
