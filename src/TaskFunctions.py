@@ -1,8 +1,10 @@
+from subprocess import check_output
+
 from celery import Celery
 
 #---------- RabbitMQ Credentials ----------#
 rabbitUser = 'rabbitUser'
-rabbitPass = 'password'
+rabbitPass = 'rabbitPass'
 rabbitHost = 'localhost'
 rabbitPort = 5672
 rabbitVHost = 'rabbitVHost'
@@ -13,9 +15,9 @@ app.conf.update(
     {
         'BROKER_URL':               'amqp://{0}:{1}@{2}:{3}/{4}'.format(rabbitUser, rabbitPass, rabbitHost, rabbitPort, rabbitVHost),
         'CELERY_RESULT_BACKEND':    'redis://localhost/0',
-        'CELERY_TASK_SERIALIZER':   'json',
-        'CELERY_RESULT_SERIALIZER': 'json',
-        'CELERY_ACCEPT_CONTENT':    ['json']
+        #'CELERY_TASK_SERIALIZER':   'json',
+        #'CELERY_RESULT_SERIALIZER': 'json',
+        #'CELERY_ACCEPT_CONTENT':    ['json']
     })
 
 #---------- Tasks ----------#
@@ -26,3 +28,9 @@ def add(x, y):
     """
     return x + y
 
+@app.task
+def runUnitTest():
+    """
+    """
+    result = check_output(['python', '-m', 'unittest', '-v', 'RunUnitTests'])
+    return result
