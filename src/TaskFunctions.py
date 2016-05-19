@@ -1,3 +1,5 @@
+from email.mime.text import MIMEText
+import smtplib
 from subprocess import check_output
 
 from celery import Celery
@@ -34,3 +36,24 @@ def runUnitTest():
     """
     result = check_output(['python', '-m', 'unittest', '-v', 'RunUnitTests'])
     return result
+
+@app.task
+def sendEmails(*addrs):
+    """
+    """
+    SMTPUSER = 'user'
+    SMTPPASS = 'pass'
+
+    msg = MIMEText('Hello World')
+    msg['Subject'] = 'Hello World'
+    msg['From'] = 'user@yahoo.com'
+    msg['To'] = 'user@gmail.com'
+
+    print('port: %d' % 587 )
+    s = smtplib.SMTP('smtp.mail.yahoo.com', port=587)
+    s.starttls()
+    s.login(SMTPUSER, SMTPPASS)
+    s.send_message(msg)
+    s.quit()
+    return s
+
