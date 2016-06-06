@@ -1,7 +1,7 @@
 ---
 - vars:
     host: celerybox
-    user: dev
+    user: celery
     title: celery-workshop
     homedir: /home/{{ user }}
     workshopPath: "{{ homedir }}/{{ title }}"
@@ -80,3 +80,8 @@
       become: yes
       become_method: sudo
       command: rabbitmq-plugins enable rabbitmq_management
+
+    - name: Restart RabbitMQ
+      become: yes
+      become_method: sudo
+      command: systemctl restart rabbitmq-server.service
