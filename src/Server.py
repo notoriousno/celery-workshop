@@ -2,6 +2,8 @@ from klein import Klein
 from twisted.internet import task, reactor
 from twisted.web.resource import Resource
 
+import Sequential
+
 app = Klein()
 
 def delayedCall(n):
@@ -17,5 +19,10 @@ def delay(requests, t):
         return d
     else:
         return delayedCall(0)
+
+@app.route('/upload', branch=True)
+def sequential(request):
+    return Sequential.app.resource()
+
 
 app.run('localhost', 8000)

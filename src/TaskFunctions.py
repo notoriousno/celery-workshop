@@ -57,3 +57,9 @@ def sendEmails(*addrs):
     s.quit()
     return s
 
+@app.task
+def uploadImages(filebytes, filepath):
+    """
+    """
+    
+

@@ -1,6 +1,7 @@
 [ ] Make ansible command to create users
     [ ] redis
     [x] rabbitmq
+    [ ] MongoDB
 [ ] Modify the password so it is hidden from public
 [ ] Ansible script to start services
 [ ] Database intensive task

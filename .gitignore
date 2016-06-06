@@ -1,4 +1,5 @@
 venv/
+dmz/
 
 *.log
 *.pyc
