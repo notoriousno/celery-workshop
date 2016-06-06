@@ -6,6 +6,9 @@
     homedir: /home/{{ user }}
     workshopPath: "{{ homedir }}/{{ title }}"
     venvPath: "{{ workshopPath }}/venv/{{ title }}"
+    rabbitUser: rabbitUser
+    rabbitPass: rabbitPass
+    rabbitVHost: rabbitVHost
 
   hosts: "{{ host }}"
   remote_user: "{{ user }}"
