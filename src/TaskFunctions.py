@@ -1,6 +1,8 @@
 from email.mime.text import MIMEText
+from os.path import splitext
 import smtplib
 from subprocess import check_output
+from uuid import uuid4
 
 from celery import Celery
 
@@ -58,8 +60,13 @@ def sendEmails(*addrs):
     return s
 
 @app.task
-def uploadImages(filebytes, filepath):
+def resizeImage(src, dest, height=50, width=50):
     """
     """
+    with open(dest, 'wb') as f:
+        f.write(src)
+
+    filename, ext = splitext(dest)
+    check_output(['convert', dest, '-resize', '%dx%d' % (height, width), '%s%s' % (uuid4(), ext)])
     
 
